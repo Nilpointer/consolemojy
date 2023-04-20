@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-func GetEmo(name string) (string, error) {
+func Get(name string) (string, error) {
 	var code string
 	switch name {
 	case "fire":
@@ -22,11 +22,16 @@ func GetEmo(name string) (string, error) {
 		code = "\\U0000274C"
 	case "warning":
 		code = "\\U000026A0"
+	case "calendar":
+		code = "\\U0001F4C5"
 	default:
 		return "", errors.New("enf - emoji not found")
 
 	}
 	h := strings.ReplaceAll(code, "\\U", "0x")
-	i, _ := strconv.ParseInt(h, 0, 64)
+	i, err := strconv.ParseInt(h, 0, 64)
+	if err != nil {
+		return "", err
+	}
 	return html.UnescapeString(string(i)), nil
 }
